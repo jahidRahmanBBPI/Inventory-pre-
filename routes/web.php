@@ -9,3 +9,4 @@ Route::get('/', function () {
 });
 
 Route::post('/UserRegistration', [UserController::class, 'register'])->withoutMiddleware(VerifyCsrfToken::class);
+Route::post('/UserLogin', [UserController::class, 'UserLogin'])->withoutMiddleware(VerifyCsrfToken::class); 
