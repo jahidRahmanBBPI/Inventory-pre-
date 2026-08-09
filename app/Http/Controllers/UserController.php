@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Helper\JWTToken;
+use App\Mail\OTPMail;
 use App\Models\User;
 use Exception;
 use Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -77,19 +79,54 @@ class UserController extends Controller
                 'message' => 'Invalid email or password',
             ], 200);
         }
-
-        // $user = User::where('email', $request->email)->first();
-        // if (!$user || !Hash::check($request->password, $user->password)) {
-        //     return response()->json([
-        //         'status' => 'error',
-        //         'message' => 'Invalid email or password',
-        //     ], 401);
-        // }
-
-        // Generate JWT token
-        $jwtToken = new \App\Helper\JWTToken();
-        
-        // $token = $jwtToken->CreateToken($user->email);
-
     }
+
+    function SendOTPCode_chat (Request $request)
+    {
+        $request->validate([
+            'email' => 'required|string|email|max:255',
+        ]);
+
+        $count = User::where('email', $request->email)->count();
+        if($count == 1){
+            $user = User::where('email', $request->email)->first();
+            // Generate OTP
+            $otp = rand(100000, 999999);
+            // Send OTP to user email
+            Mail::to($user->email)->send(new \App\Mail\OTPMail($otp));
+            return response()->json([
+                'status' => 'success',
+                'message' => 'OTP sent to your email',
+                'otp' => $otp,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Invalid email',
+            ], 200);
+        }
+    }
+
+    function SendOTPCode(Request $request){
+        $email = $request->email;
+        $otp = rand(100000, 999999);
+        $count = User::where('email', '=', $email)->count();
+        if($count == 1){
+            //OTP send to email
+            Mail::to($email)->send(new OTPMail($otp));
+            // OTP code Table update
+            User::where('email', '=', $email)->update(['otp' => $otp]);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'OTP sent to your email',
+            ], 200);
+        }
+        else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Invalid email',
+            ], 200);
+        }
+    }
+
 }
