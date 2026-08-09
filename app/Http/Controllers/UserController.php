@@ -6,8 +6,8 @@ use App\Helper\JWTToken;
 use App\Mail\OTPMail;
 use App\Models\User;
 use Exception;
-use Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
@@ -28,7 +28,7 @@ class UserController extends Controller
         'firstName' => $request->firstName,
         'lastName' => $request->lastName,
         'email' => $request->email,
-        'password' => bcrypt($request->password),
+        'password' => Hash::make($request->password),
         'mobile' => $request->mobile,
         
     ]);
@@ -49,37 +49,66 @@ class UserController extends Controller
            
     }
 
-    function UserLogin(Request $request)
-    {
-        // $request->validate([
-        //     'email' => 'required|string|email|max:255',
-        //     'password' => 'required|string|min:3',
-        // ]);
+    // function UserLogin(Request $request)
+    // {
+    //     $count = User::where('email', $request->email)->count();
+    //     if($count == 1){
+    //         // User Login with jwt token
+    //         $token = JWTToken::CreateToken($request->email);
+    //         return response()->json([
+    //             'status' => 'success',
+    //             'message' => 'User Login Successfully',
+    //             'token' => $token,
+    //         ], 200);
+    //     } else {
+    //         return response()->json([
+    //             'status' => 'failed',
+    //             'message' => 'Invalid email',
+    //         ], 200);
+    //     }
+    
+    // }
 
-        $count = User::where('email', $request->email)->count();
-        if($count == 1){
-            $user = User::where('email', $request->email)->first();
-            if(Hash::check($request->password, $user->password)){
-                // User Login -> jwt token issue
-                $token = JWTToken::CreateToken($request->email);
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'User Login Successfully',
-                    'token' => $token,
-                ], 200);
-            } else {
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => 'Invalid email or password',
-                ], 200);
-            }
-        } else {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Invalid email or password',
-            ], 200);
-        }
+    
+
+function UserLogin(Request $request)
+{
+    $user = User::where('email', $request->email)->first();
+
+    // dd([
+    //     'input_email' => $request->email,
+    //     'input_password' => $request->password,
+    //     'user_found' => $user ? true : false,
+    //     'database_password' => $user?->password,
+    //     'password_match' => $user
+    //         ? Hash::check($request->password, $user->password)
+    //         : false,
+    // ]);
+
+    if (!$user) {
+        return response()->json([
+            'status' => 'failed',
+            'message' => 'Invalid email or password',
+        ], 401);
     }
+
+    // User input password vs database hashed password
+    if (!Hash::check($request->password, $user->password)) {
+        return response()->json([
+            'status' => 'failed',
+            'message' => 'Invalid email or password',
+        ], 401);
+    }
+
+    // Password correct
+    $token = JWTToken::CreateToken($user->email);
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'User Login Successfully',
+        'token' => $token,
+    ], 200);
+}
 
     function SendOTPCode_chat (Request $request)
     {
@@ -127,6 +156,12 @@ class UserController extends Controller
                 'message' => 'Invalid email',
             ], 200);
         }
+    }
+
+    function VerifyOTPCode(Request $request){
+        $email = $request->email;
+        $otp = $request->otp;
+
     }
 
 }
