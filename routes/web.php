@@ -13,6 +13,7 @@ Route::post('/UserRegistration', [UserController::class, 'register'])->withoutMi
 Route::post('/UserLogin', [UserController::class, 'UserLogin'])->withoutMiddleware(VerifyCsrfToken::class); 
 
 Route::post('/send-otp', [UserController::class, 'SendOTPCode'])->withoutMiddleware(VerifyCsrfToken::class);
+Route::post('/verify-otp', [UserController::class, 'VerifyOTPCode'])->withoutMiddleware(VerifyCsrfToken::class);
 Route::view('/verify-otp', 'email.OTPMail');
 // video 9
 // mailertrap.io

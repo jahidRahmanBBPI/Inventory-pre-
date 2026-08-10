@@ -15,6 +15,7 @@ class UserController extends Controller
     function register(Request $request)
     {
 
+    // dd($request->all());
     // $request->validate([
     //     'firstName' => 'required|string|max:255',
     //     'lastName' => 'required|string|max:255',
@@ -22,8 +23,10 @@ class UserController extends Controller
     //     'password' => 'required|string|min:8',
     //     'mobile' => 'required|string|max:50|unique:users',
     // ]);    
+    //  dd($request->all());
 
     try {
+        
         User::create([
         'firstName' => $request->firstName,
         'lastName' => $request->lastName,
@@ -49,29 +52,7 @@ class UserController extends Controller
            
     }
 
-    // function UserLogin(Request $request)
-    // {
-    //     $count = User::where('email', $request->email)->count();
-    //     if($count == 1){
-    //         // User Login with jwt token
-    //         $token = JWTToken::CreateToken($request->email);
-    //         return response()->json([
-    //             'status' => 'success',
-    //             'message' => 'User Login Successfully',
-    //             'token' => $token,
-    //         ], 200);
-    //     } else {
-    //         return response()->json([
-    //             'status' => 'failed',
-    //             'message' => 'Invalid email',
-    //         ], 200);
-    //     }
-    
-    // }
-
-    
-
-function UserLogin(Request $request)
+    function UserLogin(Request $request)
 {
     $user = User::where('email', $request->email)->first();
 
@@ -108,32 +89,6 @@ function UserLogin(Request $request)
         'message' => 'User Login Successfully',
         'token' => $token,
     ], 200);
-}
-
-    function SendOTPCode_chat (Request $request)
-    {
-        $request->validate([
-            'email' => 'required|string|email|max:255',
-        ]);
-
-        $count = User::where('email', $request->email)->count();
-        if($count == 1){
-            $user = User::where('email', $request->email)->first();
-            // Generate OTP
-            $otp = rand(100000, 999999);
-            // Send OTP to user email
-            Mail::to($user->email)->send(new \App\Mail\OTPMail($otp));
-            return response()->json([
-                'status' => 'success',
-                'message' => 'OTP sent to your email',
-                'otp' => $otp,
-            ], 200);
-        } else {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Invalid email',
-            ], 200);
-        }
     }
 
     function SendOTPCode(Request $request){
@@ -161,7 +116,22 @@ function UserLogin(Request $request)
     function VerifyOTPCode(Request $request){
         $email = $request->email;
         $otp = $request->otp;
+        $count = User::where('email', '=', $email)->where('otp', '=', $otp)->count();
+        if($count == 1){
+            // OTP code Table update
+            User::where('email', '=', $email)->update(['otp' => null]);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'OTP verified successfully',
+            ], 200);
 
+    }
+        else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Invalid OTP',
+            ], 400);
+        }
     }
 
 }
