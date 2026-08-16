@@ -162,9 +162,14 @@ class UserController extends Controller
 
     function ResetPass(Request $request){
         try{
-            $email = $request->header('email');
+            // $email = $request->header('email');
+            $token = $request->header('token');
+            // return $token;
+            $email = JWTToken::VerifyToken($token);
+            return $email;
         $password = $request->input('password');
-        User::where('email', '=', $email)->update(['password' => $password]);
+        // return ([$email, $password]);
+        User::where('email', '=', $email)->update(['password' => Hash::make($password)]);
         return response()->json([
             'status'=>'success',
             'message'=>'Password Reset Successful'
