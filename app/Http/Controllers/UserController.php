@@ -14,7 +14,6 @@ class UserController extends Controller
 {
     function register(Request $request)
     {
-
     // dd($request->all());
     // $request->validate([
     //     'firstName' => 'required|string|max:255',
@@ -25,6 +24,7 @@ class UserController extends Controller
     // ]);    
     //  dd($request->all());
 
+    
     try {
         
         User::create([
@@ -52,10 +52,8 @@ class UserController extends Controller
            
     }
 
-    function UserLogin(Request $request)
-{
+    function UserLogin(Request $request) {
     $user = User::where('email', $request->email)->first();
-
     // dd([
     //     'input_email' => $request->email,
     //     'input_password' => $request->password,
@@ -66,6 +64,7 @@ class UserController extends Controller
     //         : false,
     // ]);
 
+    
     if (!$user) {
         return response()->json([
             'status' => 'failed',
@@ -113,29 +112,6 @@ class UserController extends Controller
         }
     }
 
-    // function VerifyOTPCode(Request $request){
-    //     $email = $request->email;
-    //     $otp = $request->otp;
-    //     $count = User::where('email', '=', $email)->where('otp', '=', $otp)->count();
-    //     if($count == 1){
-    //         // OTP code Table update
-    //         User::where('email', '=', $email)->update(['otp' => null]);
-    //         return response()->json([
-    //             'status' => 'success',
-    //             'message' => 'OTP verified successfully',
-    //         ], 200);
-
-    // }
-    //     else {
-    //         return response()->json([
-    //             'status' => 'failed',
-    //             'message' => 'Invalid OTP',
-    //         ], 400);
-    //     }
-    // }
-
-
-
     function VerifyOTP(Request $request){
         $email = $request->input('email');
         $otp = $request->input('otp');
@@ -164,16 +140,14 @@ class UserController extends Controller
         try{
             // $email = $request->header('email');
             $token = $request->header('token');
-            // return $token;
             $email = JWTToken::VerifyToken($token);
-            return $email;
-        $password = $request->input('password');
-        // return ([$email, $password]);
-        User::where('email', '=', $email)->update(['password' => Hash::make($password)]);
-        return response()->json([
-            'status'=>'success',
-            'message'=>'Password Reset Successful'
-        ]);
+            $password = $request->input('password');
+            // return ([$email, $password]);
+            User::where('email', '=', $email)->update(['password' => Hash::make($password)]);
+            return response()->json([
+                'status'=>'success',
+                'message'=>'Password Reset Successful'
+            ]);
         }catch(Exception $e){
             return response()->json([
                 'status'=>'fail',
