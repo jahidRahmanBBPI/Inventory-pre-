@@ -52,6 +52,10 @@ class UserController extends Controller
            
     }
 
+    function UserLoginView(){
+        return view('pages.auth.login-page');
+    }
+
     function UserLogin(Request $request) {
     $user = User::where('email', $request->email)->first();
     // dd([
@@ -87,7 +91,8 @@ class UserController extends Controller
         'status' => 'success',
         'message' => 'User Login Successfully',
         'token' => $token,
-    ], 200);
+    ], 200)->cookie('token', $token,60*20*30);
+    
     }
 
     function SendOTPCode(Request $request){
@@ -103,6 +108,7 @@ class UserController extends Controller
                 'status' => 'success',
                 'message' => 'OTP sent to your email',
             ], 200);
+
         }
         else {
             return response()->json([
