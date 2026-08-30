@@ -19,19 +19,42 @@
 </div>
 
 <script>
-  async function ResetPass() {
-      let postBody={"password":document.getElementById('password').value}
+async function ResetPass(){
+    let password = document.getElementById('password').value;
+    let cpassword = document.getElementById('cpassword').value;
 
-      showLoader();
-      let res=await axios.post("/reset-password",postBody,HeaderToken());
-      hideLoader()
-
-      if(res.status===200 && res.data['status']==='success'){
-          window.location.href="/userProfile";
-      }
-      else{
-          errorToast(res.data['message']);
-      }
-
+    if(password.length ===0){
+        errorToast('Password is required')
+    }else if(cpassword.length ===0){
+        errorToast('Confirm Password is required')
+    }else if(password !== cpassword){
+        errorToast('Password and Confirm Password must be same')
+    }else{
+        showLoader()
+        let res = await axios.post("/Reset-Password",{password:password});
+        hideLoader();
+        if(res.status===200 && res.data['status'] === 'success'){
+            successToast(res.data['message']);
+            setTimeout(function (){window.location.href="/userLogin";
+            },1000)
+        }
     }
+}
+</script>
+<script>
+//   async function ResetPass() {
+//       let postBody={"password":document.getElementById('password').value}
+
+//       showLoader();
+//       let res=await axios.post("/reset-password",postBody,HeaderToken());
+//       hideLoader()
+
+//       if(res.status===200 && res.data['status']==='success'){
+//           window.location.href="/userProfile";
+//       }
+//       else{
+//           errorToast(res.data['message']);
+//       }
+
+//     }
 </script>

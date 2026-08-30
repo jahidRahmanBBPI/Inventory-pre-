@@ -143,9 +143,11 @@ class UserController extends Controller
     }
 
     function ResetPass(Request $request){
+        
         try{
             // $email = $request->header('email');
-            $token = $request->header('token');
+            // $token = $request->header('token');
+            $token = $request->cookie('token');
             $email = JWTToken::VerifyToken($token);
             $password = $request->input('password');
             // return ([$email, $password]);

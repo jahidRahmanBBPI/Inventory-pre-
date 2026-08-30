@@ -25,7 +25,7 @@ Route::post('/reset-password',[UserController::class, 'ResetPass'])->withoutMidd
 
 // Route::view('/verify-otp', 'email.OTPMail');
 
-// video 17
+// video 18
 // mailertrap.io
 
 // Page Routes

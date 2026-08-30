@@ -124,6 +124,8 @@ async function SubmitLogin() {
         }
         else{
             errorToast(res.data['message']);
+            // errorToast("Some thing went wrong!");
+            // console.log('wrong')
         }
     }
 }
