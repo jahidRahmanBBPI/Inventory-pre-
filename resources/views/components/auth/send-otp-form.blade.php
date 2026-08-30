@@ -16,18 +16,39 @@
 </div>
 
 <script>
-   async function SentOTP() {
+    async function SentOTP(){
+        let email = document.getElementById('email').value;
+        if(email.length === 0){
+            errorToast('Please enter your email address');
+        }else{
+            showLoader();
+            let res = await axios.post('/send-otp', {email:email});
+            hideLoader();
+            if(res.status===200 && res.data['status'] === 'success'){
+                successToast(res.data['message'])
+                sessionStorage.setItem('email', email);
+                setTimeout(function(){
+                    window.location.href = '/verifyOtp';
+                },1000)
+            }else{
+                errorToast(res.data['message']);
+            }
 
-       let postBody={"email":document.getElementById('email').value,}
-       showLoader();
-       let res=await axios.post("/send-otp",postBody);
-       hideLoader()
-       if(res.status===200 && res.data['status']==='success'){
-           sessionStorage.setItem("email",document.getElementById('email').value);
-           window.location.href="/verifyOtp";
-       }
-       else{
-           errorToast(res.data['message']);
-       }
+
+        }
     }
+//    async function SentOTP() {
+
+//        let postBody={"email":document.getElementById('email').value,}
+//        showLoader();
+//        let res=await axios.post("/send-otp",postBody);
+//        hideLoader()
+//        if(res.status===200 && res.data['status']==='success'){
+//            sessionStorage.setItem("email",document.getElementById('email').value);
+//            window.location.href="/verifyOtp";
+//        }
+//        else{
+//            errorToast(res.data['message']);
+//        }
+//     }
 </script>

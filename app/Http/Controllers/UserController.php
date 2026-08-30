@@ -101,7 +101,7 @@ class UserController extends Controller
         $count = User::where('email', '=', $email)->count();
         if($count == 1){
             //OTP send to email
-            Mail::to($email)->send(new OTPMail($otp));
+            // Mail::to($email)->send(new OTPMail($otp));
             // OTP code Table update
             User::where('email', '=', $email)->update(['otp' => $otp]);
             return response()->json([
@@ -132,7 +132,7 @@ class UserController extends Controller
                 'status' => 'success',
                 'message' => 'OTP verified successfully',
                 'token' => $token,
-            ], 200);
+            ], 200)->cookie('token', $token,60*20*30);
         }
         else {
             return response()->json([

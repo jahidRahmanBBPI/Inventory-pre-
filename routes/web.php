@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Route;
     // return view('welcome');
 // });
 
-Route::post('/UserRegistration', [UserController::class, 'register'])->withoutMiddleware(VerifyCsrfToken::class);
+Route::post('/user-registration', [UserController::class, 'register'])->withoutMiddleware(VerifyCsrfToken::class);
 
-Route::get('/UserLogin', [UserController::class, 'UserLoginView']); 
+// Route::get('/UserLogin', [UserController::class, 'UserLoginView']); 
 Route::post('/UserLogin', [UserController::class, 'UserLogin'])->withoutMiddleware(VerifyCsrfToken::class); 
 
 Route::post('/send-otp', [UserController::class, 'SendOTPCode'])->withoutMiddleware(VerifyCsrfToken::class);
@@ -24,8 +24,8 @@ Route::post('/Reset-Password', [UserController::class, 'ResetPass'])->withoutMid
 Route::post('/reset-password',[UserController::class, 'ResetPass'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
 
 // Route::view('/verify-otp', 'email.OTPMail');
-// video 13f(11)
-// video 14
+
+// video 17
 // mailertrap.io
 
 // Page Routes

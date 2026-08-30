@@ -40,32 +40,49 @@
     </div>
 </div>
 
+
 <script>
 
-  async function onRegistration() {
+async function onRegistration() {
+    
+let postBody={
+    "firstName":document.getElementById('firstName').value,
+    "lastName":document.getElementById('lastName').value,
+    "email":document.getElementById('email').value,
+    "password":document.getElementById('password').value,
+    "mobile":document.getElementById('mobile').value,
+}
 
-
-
-            let postBody={
-                "firstName":document.getElementById('firstName').value,
-                "lastName":document.getElementById('lastName').value,
-                "email":document.getElementById('email').value,
-                "password":document.getElementById('password').value,
-                "mobile":document.getElementById('mobile').value,
-            }
-
-              showLoader();
-              let res=await axios.post("/user-registration",postBody);
-              hideLoader()
-              if(res.status===200 && res.data['status']==='success'){
-                //   window.location.href="/userLogin";
-                console.log('registration successful');
-              }
-              else{
-                  errorToast(res.data['message']);
-              }
-
-  }
-
+if(postBody.firstName.length===0){
+        errorToast('First Name is require');
+    }
+    else if(postBody.lastName.length===0){
+        errorToast('Last Name is require');
+    }
+    else if(postBody.email.length===0){
+        errorToast('Email is require');
+    }
+    else if(postBody.mobile.length===0){
+        errorToast('Mobile is require');
+    }
+    else if(postBody.password.length===0){
+        errorToast('Password is require');
+    }
+    else{
+        showLoader();
+        let res=await axios.post("/user-registration",postBody);
+        hideLoader()
+        if(res.status===200 && res.data['status']==='success'){
+        //   window.location.href="/userLogin";
+        // Show success message 
+        successToast('Registration successful!'); // Redirect after 1.5 seconds 
+        setTimeout(function () { window.location.href = "/userLogin"; }, 1500);
+        }
+        else{
+            errorToast(res.data['message']);
+        }
+    }
+    
+}
 
 </script>
