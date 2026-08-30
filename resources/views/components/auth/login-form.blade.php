@@ -119,8 +119,16 @@ async function SubmitLogin() {
         let res=await axios.post("/UserLogin",{email:email, password:password});
         hideLoader()
         if(res.status===200 && res.data['status']==='success'){
+            // console.log('success')
             setToken(res.data['token'])
-            window.location.href="/userProfile";
+            // window.location.href="/userProfile";
+            //============
+            
+            successToast(res.data['message']);
+            setTimeout(function (){window.location.href="/userProfile";
+            },1000)
+        
+            //============
         }
         else{
             errorToast(res.data['message']);

@@ -63,6 +63,17 @@
                     <a href="{{url("/logout")}}" class="side-bar-item">
                         <span class="side-bar-item-caption">Logout</span>
                     </a>
+                    {{-- <a href="#" 
+   class="side-bar-item"
+   onclick="event.preventDefault(); 
+   document.getElementById('logout-form').submit();">
+
+    <span class="side-bar-item-caption">Logout</span>
+</a> --}}
+
+{{-- <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form> --}}
                 </div>
             </div>
         </div>

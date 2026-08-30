@@ -73,7 +73,7 @@ class UserController extends Controller
         return response()->json([
             'status' => 'failed',
             'message' => 'Invalid email or password',
-        ], 401);
+        ]);
     }
 
     // User input password vs database hashed password
@@ -81,7 +81,7 @@ class UserController extends Controller
         return response()->json([
             'status' => 'failed',
             'message' => 'Invalid email or password',
-        ], 401);
+        ]);
     }
 
     // Password correct
@@ -163,5 +163,9 @@ class UserController extends Controller
             ]);
         }
         
+    }
+
+    function UserLogout(){
+        return redirect('/UserLogin')->cookie('token', '',-1);
     }
 }
