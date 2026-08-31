@@ -13,18 +13,8 @@ use Illuminate\Support\Facades\Mail;
 class UserController extends Controller
 {
     function register(Request $request)
-    {
-    // dd($request->all());
-    // $request->validate([
-    //     'firstName' => 'required|string|max:255',
-    //     'lastName' => 'required|string|max:255',
-    //     'email' => 'required|string|email|max:255|unique:users',
-    //     'password' => 'required|string|min:8',
-    //     'mobile' => 'required|string|max:50|unique:users',
-    // ]);    
+    {  
     //  dd($request->all());
-
-    
     try {
         
         User::create([
@@ -58,6 +48,7 @@ class UserController extends Controller
 
     function UserLogin(Request $request) {
     $user = User::where('email', $request->email)->first();
+    // return $user->id;
     // dd([
     //     'input_email' => $request->email,
     //     'input_password' => $request->password,
@@ -85,7 +76,7 @@ class UserController extends Controller
     }
 
     // Password correct
-    $token = JWTToken::CreateToken($user->email);
+    $token = JWTToken::CreateToken($user->email, $user->id);
 
     return response()->json([
         'status' => 'success',
@@ -167,5 +158,42 @@ class UserController extends Controller
 
     function UserLogout(){
         return redirect('/UserLogin')->cookie('token', '',-1);
+    }
+    function UpdateProfile(Request $request){
+        try{
+            // $token = $request->header('token');
+            $token = $request->cookie('token');
+            $email = JWTToken::VerifyToken($token);
+            return $email;
+            $firstName = $request->input('firstName');
+            $lastName = $request->input('lastName');
+            $mobile = $request->input('mobile');
+            // $password = $request->input('password');
+            User::where('email', '=', $email)->update([
+                'firstName' =>$firstName,
+                'lastName' => $lastName,
+                'mobile' => $mobile,
+                // 'password' => Hash::make($password)
+            ]);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Request Successful',
+            ], 200);
+        }catch (Exception $e){
+            return response()->json([
+                'status' => 'fail',
+            'message' => 'Request Fail'
+            ],200);
+        }
+    }
+    function UserProfile(Request $request){
+        $token = $request->cookie('token');
+        $email = JWTToken::VerifyToken($token);
+        $user = User::where('email', '=', $email->userEmail)->first();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Request Successful',
+            'data'=> $user
+        ],200);
     }
 }

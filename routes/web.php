@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Route;
     // return view('welcome');
 // });
 
+Route::get('/user-profile',[UserController::class, 'UserProfile']);//->middleware([TokenVerificationMiddleware::class]);
+Route::get('/userUpdate', [UserController::class, 'UpdateProfile']);//->middleware([TokenVerificationMiddleware::class]);
+
 Route::post('/user-registration', [UserController::class, 'register'])->withoutMiddleware(VerifyCsrfToken::class);
 
 Route::get('/UserLogin', [UserController::class, 'UserLoginView']); 
@@ -29,7 +32,7 @@ Route::get('/logout',[UserController::class, 'UserLogout'])->name('logout');
 
 // Route::view('/verify-otp', 'email.OTPMail');
 
-// video 18
+// video 21
 // mailertrap.io
 
 // Page Routes
@@ -38,5 +41,5 @@ Route::view('/','pages.home');
 Route::view('/userRegistration','pages.auth.registration-page');
 Route::view('/sendOtp','pages.auth.send-otp-page');
 Route::view('/verifyOtp','pages.auth.verify-otp-page');
-Route::view('/resetPassword','pages.auth.reset-pass-page');
-Route::view('/userProfile','pages.dashboard.profile-page');
+Route::view('/resetPassword','pages.auth.reset-pass-page');//->middleware([TokenVerificationMiddleware::class])
+Route::view('/userProfile','pages.dashboard.profile-page')->middleware([TokenVerificationMiddleware::class]);

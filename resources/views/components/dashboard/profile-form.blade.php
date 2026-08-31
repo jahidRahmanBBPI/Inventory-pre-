@@ -36,18 +36,18 @@
     </div>
 </div>
 
-{{-- <script>
+<script>
 
     getProfile();
     async function getProfile(){
         try{
             showLoader();
-            let res=await axios.get("/user-profile",HeaderToken());
+            let res=await axios.get("user-profile",HeaderToken());
             hideLoader();
-            document.getElementById('email').value=res.data['email'];
-            document.getElementById('firstName').value=res.data['firstName']
-            document.getElementById('lastName').value=res.data['lastName']
-            document.getElementById('mobile').value=res.data['mobile']
+            document.getElementById('email').value=res.data.data['email'];
+            document.getElementById('firstName').value=res.data.data['firstName']
+            document.getElementById('lastName').value=res.data.data['lastName']
+            document.getElementById('mobile').value=res.data.data['mobile']
 
         }catch (e) {
            unauthorized(e.response.status)
@@ -61,20 +61,142 @@
             "lastName":document.getElementById('lastName').value,
             "mobile":document.getElementById('mobile').value,
         }
-        showLoader();
-        let res=await axios.post("/user-update",PostBody,HeaderToken());
-        hideLoader();
+        // console.log(PostBody);
+        // showLoader();
+        let res=await axios.get("/userUpdate",PostBody,HeaderToken());
+        // hideLoader();
         if(res.data['status']==="success"){
-            successToast(res.data['message'])
-            await getProfile();
+            console.log('success')
+        }else{
+            console.log('fail');
         }
-        else {
-            successToast(res.data['message'])
-        }
+        //     successToast(res.data['message'])
+        //     await getProfile();
+        // }
+        // else {
+        //     successToast(res.data['message'])
+        // }
 
 
     }
 
 
+</script>
+{{-- <script>
+    async function getProfile();
+    showLoader();
+    let res=await axios.get("/user-profile")
+    hideLoader();
+    if(res.status===200 && res.data['status']==='success'){
+        let data = res.data['data'];
+        document.getElementById('email').value=data['email'];
+        document.getElementById('firstName').value=data['firstName'];
+        document.getElementById('lastName').value=data['lastName'];
+        document.getElementById('mobile').value=data['mobile']
+    }else{
+        errorToast(res.data['message'])
+    }
+    getProfile();
+</script> --}}
+{{-- <script>
+    async function onUpdate(){
+        let PostBody = {
+            "firstName":document.getElementById('firstName').value,
+            "lastName":document.getElementById('lastName').value,
+            "mobile":document.getElementById('mobile').value,
+        }
+        showLoader();
+        let res = await axios.post("/userUpdate", PostBody, HeaderToken());
+        hideLoader();
+        if(res.data['status']==='success'){
+            successToast(res.data['message'])
+            await getProfile();
+        }else{
+            successToast(res.data['message'])
+        }
+    }
 </script> --}}
 
+{{-- <script>
+    getProfile();
+
+    async function getProfile() {
+        try {
+            showLoader();
+
+            let res = await axios.get("/user-profile", HeaderToken());
+
+            hideLoader();
+
+            if (res.status === 200 && res.data['status'] === 'success') {
+
+                let data = res.data['data'];
+
+                document.getElementById('email').value = data['email'];
+                document.getElementById('firstName').value = data['firstName'];
+                document.getElementById('lastName').value = data['lastName'];
+                document.getElementById('mobile').value = data['mobile'];
+
+            } else {
+                errorToast(res.data['message']);
+            }
+
+        } catch (e) {
+
+            hideLoader();
+
+            if (e.response) {
+                unauthorized(e.response.status);
+            } else {
+                errorToast("Something went wrong");
+            }
+        }
+    }
+</script>
+
+
+<script>
+    async function onUpdate() {
+
+        let PostBody = {
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            mobile: document.getElementById('mobile').value
+        };
+
+        try {
+
+            showLoader();
+
+            let res = await axios.post(
+                "/userUpdate",
+                PostBody,
+                HeaderToken()
+            );
+
+            hideLoader();
+
+            if (res.data['status'] === 'success') {
+
+                successToast(res.data['message']);
+
+                await getProfile();
+
+            } else {
+
+                errorToast(res.data['message']);
+
+            }
+
+        } catch (e) {
+
+            hideLoader();
+
+            if (e.response) {
+                unauthorized(e.response.status);
+            } else {
+                errorToast("Something went wrong");
+            }
+        }
+    }
+</script> --}}

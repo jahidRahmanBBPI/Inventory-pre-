@@ -76,7 +76,7 @@ if(postBody.firstName.length===0){
         //   window.location.href="/userLogin";
         // Show success message 
         successToast('Registration successful!'); // Redirect after 1.5 seconds 
-        setTimeout(function () { window.location.href = "/userLogin"; }, 1500);
+        setTimeout(function () { window.location.href = "/UserLogin"; }, 1500);
         }
         else{
             errorToast(res.data['message']);
