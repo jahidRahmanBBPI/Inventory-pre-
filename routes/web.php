@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/user-profile',[UserController::class, 'UserProfile']);//->middleware([TokenVerificationMiddleware::class]);
-Route::get('/userUpdate', [UserController::class, 'UpdateProfile']);//->middleware([TokenVerificationMiddleware::class]);
+Route::post('/userUpdate', [UserController::class, 'UpdateProfile'])->withoutMiddleware([VerifyCsrfToken::class]);//->middleware([TokenVerificationMiddleware::class]);
 
 Route::post('/user-registration', [UserController::class, 'register'])->withoutMiddleware(VerifyCsrfToken::class);
 

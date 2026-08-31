@@ -161,15 +161,16 @@ class UserController extends Controller
     }
     function UpdateProfile(Request $request){
         try{
-            // $token = $request->header('token');
-            $token = $request->cookie('token');
-            $email = JWTToken::VerifyToken($token);
-            return $email;
-            $firstName = $request->input('firstName');
-            $lastName = $request->input('lastName');
-            $mobile = $request->input('mobile');
-            // $password = $request->input('password');
-            User::where('email', '=', $email)->update([
+            
+            $token = JWTToken::VerifyToken($request->cookie('token'));
+            $email = $token->userEmail;
+            $firstName = $request->firstName;
+            $lastName = $request->lastName;
+            $mobile = $request->mobile;
+
+            User::where('email', '=', $email)
+            // return $e;
+            ->update([
                 'firstName' =>$firstName,
                 'lastName' => $lastName,
                 'mobile' => $mobile,
