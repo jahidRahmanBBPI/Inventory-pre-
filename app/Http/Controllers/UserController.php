@@ -138,15 +138,17 @@ class UserController extends Controller
         try{
             // $email = $request->header('email');
             // $token = $request->header('token');
-            $token = $request->cookie('token');
-            $email = JWTToken::VerifyToken($token);
+            // $token = $request->cookie('token');
+            // $email = JWTToken::VerifyToken($token);
+            $token = JWTToken::VerifyToken($request->cookie('token'));
+            $email = $token->userEmail;
             $password = $request->input('password');
             // return ([$email, $password]);
             User::where('email', '=', $email)->update(['password' => Hash::make($password)]);
             return response()->json([
                 'status'=>'success',
                 'message'=>'Password Reset Successful'
-            ]);
+            ])->cookie('token', '',-1);
         }catch(Exception $e){
             return response()->json([
                 'status'=>'fail',

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\TokenVerificationMiddleware;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -43,3 +44,11 @@ Route::view('/sendOtp','pages.auth.send-otp-page');
 Route::view('/verifyOtp','pages.auth.verify-otp-page');
 Route::view('/resetPassword','pages.auth.reset-pass-page');//->middleware([TokenVerificationMiddleware::class])
 Route::view('/userProfile','pages.dashboard.profile-page')->middleware([TokenVerificationMiddleware::class]);
+
+// Category Routes
+Route::get('/categoryPage', [CategoryController::class, 'CategoryPage'])->middleware([TokenVerificationMiddleware::class]);
+Route::post("/create-category",[CategoryController::class, 'CategoryCreate'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
+Route::get("/list-category",[CategoryController::class, 'CategoryList'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
+Route::post("/delete-category",[CategoryController::class, 'CategoryDelete'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
+Route::post("/update-category",[CategoryController::class, 'CategoryUpdate'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
+// 25 --4
