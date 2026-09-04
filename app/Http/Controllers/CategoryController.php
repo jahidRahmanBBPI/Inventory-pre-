@@ -21,6 +21,10 @@ class CategoryController extends Controller
             'name' => $request->input('name'),
             'user_id' => $user_id
         ]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Category Created Successfully'
+        ]);
     }
 // done.
     // function CategoryUpdate(Request $request){

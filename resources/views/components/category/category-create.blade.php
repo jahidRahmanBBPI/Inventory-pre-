@@ -36,11 +36,13 @@
 
             if(res.data['status']==="success"){
                 successToast(res.data['message']);
+                // successToast("Category Created Successfully");
                 document.getElementById("save-form").reset();
                 await getList();
             }
             else{
-                errorToast(res.data['message'])
+                // errorToast(res.data['message'])
+                errorToast("Category Creation Failed");
             }
 
         }catch (e) {

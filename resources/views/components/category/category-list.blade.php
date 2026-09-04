@@ -22,6 +22,9 @@
                 </thead>
                 <tbody id="tableList">
 
+           
+                   
+
                 </tbody>
             </table>
             </div>
@@ -30,7 +33,49 @@
 </div>
 </div>
 
+{{-- this is my code . --}}
 <script>
+    getList();
+
+    async function getList(){
+        showLoader();
+        let res = await axios.get("/list-category",HeaderToken());
+        hideLoader();
+        // if(res.data.length>0){
+            // console.log('res',res.data);
+        // }
+        let tableList = $('#tableList');
+        let tableData = $('#tableList');
+
+        tableData.DataTable().destroy();
+        tableList.empty();
+
+        res.data.forEach(function (item, index){
+            let row = `<tr>
+                            <td>${index+1}</td>
+                            <td>${item['name']}</td>
+                            <td>
+                            <button class="btn btn-sm btn-outline-success">Edit</button>    
+                            <button class="btn btn-sm btn-outline-danger">Delete</button>    
+                            </td>
+                        </tr>`
+            tableList.append(row);
+
+        });
+        // tableData.DataTable({
+        //     order:[[0, 'desc']],
+        //     lengthMenu:[5,10,15,20]
+        // })
+
+        new DataTable('#tableData',{
+           order:[[0,'asc']],
+           lengthMenu:[5,10,15,20,30]
+       });
+       
+    }
+</script>
+
+{{-- <script>
 
 getList();
 
@@ -47,7 +92,8 @@ async function getList() {
        tableData.DataTable().destroy();
        tableList.empty();
 
-       res.data['rows'].forEach(function (item,index) {
+    //    res.data['rows'].forEach(function (item,index) {
+       res.data.forEach(function (item,index) {
            let row=`<tr>
                     <td>${index+1}</td>
                     <td>${item['name']}</td>
@@ -57,6 +103,7 @@ async function getList() {
                     </td>
                  </tr>`
            tableList.append(row)
+           console.log(item['id'])
        })
 
        $('.editBtn').on('click', async function () {
@@ -72,16 +119,68 @@ async function getList() {
        })
 
        new DataTable('#tableData',{
-           order:[[0,'desc']],
+           order:[[0,'asc']],
            lengthMenu:[5,10,15,20,30]
        });
 
    }catch (e) {
-       unauthorized(e.response.status)
+    //    unauthorized(e.response.status)
+    console.log("MESSAGE:", e.message);
    }
 
 }
 
 
-</script>
+</script> --}}
 
+{{-- professional code, here is some error --}}
+{{-- <script>
+    async function getList() {
+
+    try {
+
+        showLoader();
+
+        let res = await axios.get(
+            "/list-category",
+            HeaderToken()
+        );
+
+        let tableList = $('#tableList');
+
+        res.data.forEach(function (item, index) {
+
+            let row = `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${item.name}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-success">
+                            Edit
+                        </button>
+
+                        <button class="btn btn-sm btn-outline-danger">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            `;
+
+            tableList.append(row);
+        });
+
+        new DataTable('#tableData', {
+            order: [[0, 'asc']],
+            lengthMenu: [5, 10, 15, 20, 30]
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+    } finally {
+
+        hideLoader();
+    }
+}
+</script> --}}
