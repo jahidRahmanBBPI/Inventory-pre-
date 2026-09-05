@@ -56,22 +56,30 @@
         tableList.empty();
         
 
-        res.data.forEach(function (item, index){
-            let row = `<tr>
-                            <td>${index+1}</td>
-                            <td>${item['name']}</td>
-                            <td>
-                            <button class="btn btn-sm btn-outline-success">Edit</button>    
-                            <button class="btn btn-sm btn-outline-danger">Delete</button>    
-                            </td>
-                        </tr>`
-            tableList.append(row);
+res.data.forEach(function (item, index){
+    let row = `<tr>
+                    <td>${index+1}</td>
+                    <td>${item['name']}</td>
+                    <td>
+                    <button data-id="${item['id']}" class="btn edit-btn btn-sm btn-outline-success">Edit</button>    
+                    <button data-id="${item['id']}" class="btn delete-btn btn-sm btn-outline-danger">Delete</button>    
+                    </td>
+                </tr>`
+    tableList.append(row);
 
-        });
-        // tableData.DataTable({
-        //     order:[[0, 'desc']],
-        //     lengthMenu:[5,10,15,20]
-        // })
+});
+    $('.edit-btn').on('click', async function (){
+        // alert("Edit Button Clicked " + $(this).data('id'));
+        let id = $(this).data('id');
+        $('#update-modal').modal('show');
+    })
+
+    $('.delete-btn').on('click', async function (){
+        let id = $(this).data('id');
+        // alert("Delete Button Clicked " + id);
+        $('#delete-modal').modal('show');
+        $("#deleteID").val(id);
+    })
 
         new DataTable('#tableData',{
            order:[[0,'asc']],

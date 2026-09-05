@@ -35,11 +35,32 @@ class CategoryController extends Controller
     //     ]);
     // }
 
-    function CategoryDelete(Request $request){
-        $category_id=$request->input('id');
-        $user_id=$request->header('id');
-        return Category::where('id', $category_id)->where('user_id', $user_id)->delete();
+    // function CategoryDelete(Request $request){
+    //     $category_id=$request->input('id');
+    //     $user_id=$request->header('id');
+    //     return Category::where('id', $category_id)->where('user_id', $user_id)->delete();
+    // }
+    function CategoryDelete(Request $request)
+{
+    $category_id = $request->input('id');
+    $user_id = $request->header('id');
+
+    $delete = Category::where('id', $category_id)
+                      ->where('user_id', $user_id)
+                      ->delete();
+
+    if ($delete) {
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Category Deleted Successfully'
+        ]);
+    } else {
+        return response()->json([
+            'status' => 'failed',
+            'message' => 'Category Delete Failed'
+        ]);
     }
+}
 
     function CategoryUpdate(Request $request){
         $category_id=$request->input('id');

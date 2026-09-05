@@ -17,6 +17,23 @@
 </div>
 
 <script>
+    async function itemDelete(){
+        let id= document.getElementById('deleteID').value;
+        document.getElementById('delete-modal-close').click();
+        showLoader();
+        let res = await axios.post("/delete-category",{id:id},HeaderToken());
+        hideLoader();
+     
+        if(res.data['status']== 'success'){
+            successToast("Category Deleted Successfully");
+            await getList();
+        }else{
+            errorToast("Something went wrong");
+            // errorToast(res.data['message']);
+        }
+    }
+</script>
+{{-- <script>
 
      async  function  itemDelete(){
          try {
@@ -36,4 +53,4 @@
              unauthorized(e.response.status)
          }
      }
-</script>
+</script> --}}

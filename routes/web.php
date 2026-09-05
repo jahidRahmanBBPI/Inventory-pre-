@@ -33,8 +33,8 @@ Route::get('/logout',[UserController::class, 'UserLogout'])->name('logout');
 
 // Route::view('/verify-otp', 'email.OTPMail');
 
-// video 21
-// mailertrap.io
+
+
 
 // Page Routes
 Route::view('/','pages.home');
@@ -51,4 +51,4 @@ Route::post("/create-category",[CategoryController::class, 'CategoryCreate'])->w
 Route::get("/list-category",[CategoryController::class, 'CategoryList'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
 Route::post("/delete-category",[CategoryController::class, 'CategoryDelete'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
 Route::post("/update-category",[CategoryController::class, 'CategoryUpdate'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
-// 28
+// video 29
