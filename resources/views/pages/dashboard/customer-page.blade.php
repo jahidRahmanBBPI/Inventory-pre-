@@ -1,3 +1,7 @@
-<div>
-    <!-- Let all your things have their places; let each part of your business have its time. - Benjamin Franklin -->
-</div>
+@extends('layout.sidenav-layout')
+@section('content')
+    @include('components.customer.customer-list')
+    @include('components.customer.customer-delete')
+    @include('components.customer.customer-update')
+    @include('components.customer.customer-create')
+@endsection

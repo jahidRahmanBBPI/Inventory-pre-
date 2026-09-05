@@ -45,7 +45,9 @@
             <span class="icon-nav m-0 h5" onclick="MenuBarClickHandler()">
                 <img class="nav-logo-sm mx-2"  src="{{asset('images/menu.svg')}}" alt="logo"/>
             </span>
-            <img class="nav-logo  mx-2"  src="{{asset('images/logo.png')}}" alt="logo"/>
+            {{-- <a href="{{url('/dashboard')}}"> --}}
+                <img class="nav-logo  mx-2"  src="{{asset('images/logo.png')}}" alt="logo"/>
+            {{-- </a> --}}
         </a>
 
         <div class="float-right h-auto d-flex">
@@ -54,7 +56,8 @@
                 <div class="user-dropdown-content ">
                     <div class="mt-4 text-center">
                         <img class="icon-nav-img" src="{{asset('images/user.webp')}}" alt=""/>
-                        <h6>User Name</h6>
+                        <h6 id="userName">User Name</h6>
+                        
                         <hr class="user-dropdown-divider  p-0"/>
                     </div>
                     <a href="{{url('/userProfile')}}" class="side-bar-item">
@@ -63,17 +66,6 @@
                     <a href="{{url("/logout")}}" class="side-bar-item">
                         <span class="side-bar-item-caption">Logout</span>
                     </a>
-                    {{-- <a href="#" 
-   class="side-bar-item"
-   onclick="event.preventDefault(); 
-   document.getElementById('logout-form').submit();">
-
-    <span class="side-bar-item-caption">Logout</span>
-</a> --}}
-
-{{-- <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-    @csrf
-</form> --}}
                 </div>
             </div>
         </div>
@@ -142,6 +134,23 @@
             sideNav.classList.add("side-nav-open");
             content.classList.remove("content-expand");
             content.classList.add("content");
+        }
+    }
+
+    getProfile();
+    async function getProfile(){
+        try{
+            showLoader();
+            let res=await axios.get("user-profile",HeaderToken());
+            hideLoader();
+            
+            let firstName = res.data.data['firstName']
+            let lastName = res.data.data['lastName']
+
+            document.getElementById('userName').innerText=firstName+" "+lastName;
+            
+        }catch (e) {
+           console.log(e)
         }
     }
 </script>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\TokenVerificationMiddleware;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -51,4 +52,15 @@ Route::post("/create-category",[CategoryController::class, 'CategoryCreate'])->w
 Route::get("/list-category",[CategoryController::class, 'CategoryList'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
 Route::post("/delete-category",[CategoryController::class, 'CategoryDelete'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
 Route::post("/update-category",[CategoryController::class, 'CategoryUpdate'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
-// video 29
+
+
+// Customer API
+Route::post("/create-customer", [CustomerController::class, 'customerCreate'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
+Route::get("/list-customer", [CustomerController::class, 'customerList'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
+Route::post("/delete-customer", [CustomerController::class, 'customerDelete'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
+Route::post("/update-customer", [CustomerController::class, 'customerUpdate'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
+Route::post("/customer-by-id", [CustomerController::class, 'customerById'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
+Route::view('/customerPage', 'pages.dashboard.customer-page')->middleware([TokenVerificationMiddleware::class]);
+Route::view('/dashboard', 'pages.dashboard.dashboard-page');
+// video 30
+// js baki

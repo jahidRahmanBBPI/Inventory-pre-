@@ -125,7 +125,7 @@ async function SubmitLogin() {
             //============
             
             successToast(res.data['message']);
-            setTimeout(function (){window.location.href="/userProfile";
+            setTimeout(function (){window.location.href="/dashboard";
             },1000)
         
             //============
