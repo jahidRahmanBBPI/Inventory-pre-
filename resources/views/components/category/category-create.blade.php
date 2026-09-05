@@ -18,19 +18,48 @@
                 </div>
                 <div class="modal-footer">
                     <button id="modal-close" class="btn bg-gradient-primary" data-bs-dismiss="modal" aria-label="Close">Close</button>
-                    <button onclick="Save()" id="save-btn" class="btn bg-gradient-success" >Save</button>
+                    {{-- <button onclick="Save()" id="save-btn" class="btn bg-gradient-success" >Save</button> --}}
+                    <button onclick="" id="save-btn" class="btn bg-gradient-success" >Save</button>
                 </div>
             </div>
     </div>
 </div>
 
-
 <script>
+    
+document.getElementById("save-btn").addEventListener('click', async function(){
+    let categoryName = document.getElementById('categoryName').value;
+    if(categoryName.length == 0){
+        errorToast("Category Name is Required");
+    }else{
+        document.getElementById('modal-close').click();
+
+        showLoader();
+        let res = await axios.post("/create-category",{name:categoryName})
+        hideLoader();
+        if(res.data['status']==="success"){
+            successToast(res.data['message']);
+            document.getElementById("save-form").reset();
+            await getList();
+        }
+        else{
+            errorToast("Category Creation Failed");
+        }
+    }
+})
+</script>
+{{-- // Rabbil vai --}}
+{{-- <script>
     async function Save() {
         try {
             let categoryName = document.getElementById('categoryName').value;
-            document.getElementById('modal-close').click();
-            showLoader();
+            
+            if(categoryName.length === 0){
+                errorToast("Category Name is Required");
+            
+            }else{
+                document.getElementById('modal-close').click();
+                showLoader();
             let res = await axios.post("/create-category",{name:categoryName},HeaderToken())
             hideLoader();
 
@@ -44,9 +73,11 @@
                 // errorToast(res.data['message'])
                 errorToast("Category Creation Failed");
             }
+            }
+            
 
         }catch (e) {
             unauthorized(e.response.status)
         }
     }
-</script>
+</script> --}}

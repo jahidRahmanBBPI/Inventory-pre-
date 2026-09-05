@@ -45,10 +45,16 @@
             // console.log('res',res.data);
         // }
         let tableList = $('#tableList');
-        let tableData = $('#tableList');
+        let tableData = $('#tableData');
 
-        tableData.DataTable().destroy();
+        // tableData.DataTable().destroy();
+        // tableList.empty();
+        if ($.fn.DataTable.isDataTable('#tableData')) {
+            tableData.DataTable().destroy();
+        }
+
         tableList.empty();
+        
 
         res.data.forEach(function (item, index){
             let row = `<tr>
