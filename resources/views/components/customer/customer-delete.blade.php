@@ -17,6 +17,27 @@
     </div>
 </div>
 
+<script>
+    async function itemDelete(){
+        try {
+            let id=document.getElementById('deleteID').value;
+            document.getElementById('delete-modal-close').click();
+            showLoader();
+            let res=await axios.post("/delete-customer",{id:id},HeaderToken())
+            hideLoader();
+
+            if(res.data['status']==="success"){
+                successToast(res.data['message'])
+                await getList();
+            }else{
+                errorToast(res.data['message'])
+            }
+        }catch{
+            unauthorized(e.response.status)
+        }
+    }
+</script>
+
 {{-- <script>
      async  function  itemDelete(){
 

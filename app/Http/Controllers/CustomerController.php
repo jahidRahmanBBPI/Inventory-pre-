@@ -46,7 +46,8 @@ class CustomerController extends Controller
     function CustomerDelete(Request $request){
         $customer_id= $request->input('id');
         $user_id = $request->header('id');
-        return customer::where('id', $customer_id)->where('user_id', $user_id)->delete();
+        customer::where('id', $customer_id)->where('user_id', $user_id)->delete();
+        return response()->json(['status'=>'success','message'=>'Customer Deleted Successful']);
     }
 
     function CustomerById(Request $request){
