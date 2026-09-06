@@ -33,6 +33,47 @@
 </div>
 
 
+<script>
+    async function FillUpUpdateForm(id){
+        try {
+            document.getElementById('updateID').value=id;
+            showLoader();
+            let res = await axios.post("/customer-by-id",{id:id},HeaderToken())
+            hideLoader();
+            document.getElementById('customerNameUpdate').value=res.data['name'];
+            document.getElementById('customerEmailUpdate').value=res.data['email'];
+            document.getElementById('customerMobileUpdate').value=res.data['mobile'];
+        }catch (e){
+            alert("Something went wrong!")
+        }
+    }
+
+    async function Update(){
+        try {
+            let customerName = document.getElementById('customerNameUpdate').value;
+            let customerEmail = document.getElementById('customerEmailUpdate').value;
+            let customerMobile = document.getElementById('customerMobileUpdate').value;
+            let updateID = document.getElementById('updateID').value;
+
+            // console.log(customerName,customerEmail,customerMobile,updateID)
+            document.getElementById('update-modal-close').click();
+            showLoader();
+            let res = await axios.post("/update-customer",{name:customerName,email:customerEmail,mobile:customerMobile,id:updateID},HeaderToken())
+            hideLoader();
+
+            if(res.data['status'] === 'success'){
+                document.getElementById("update-form").reset();
+                successToast(res.data['message'])
+                await getList();
+            }else{
+                errorToast(res.data['message'])
+            }
+        }catch (e){
+            alert("Something went wrong!")
+        }
+    }
+</script>
+
 {{-- <script>
 
     async function FillUpUpdateForm(id){

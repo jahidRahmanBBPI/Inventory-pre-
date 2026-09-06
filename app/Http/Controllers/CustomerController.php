@@ -52,16 +52,18 @@ class CustomerController extends Controller
     function CustomerById(Request $request){
         $customer_id = $request->input('id');
         $user_id = $request->header('id');
+        // return "id:".$user_id . " customer_id:".$customer_id;
         return customer::where('id', $customer_id)->where('user_id',$user_id)->first();
     }
 
     function CustomerUpdate(Request $request){
         $customer_id = $request->input('id');
         $user_id= $request->header('id');
-        return customer::where('id', $customer_id)->where('user_id', $user_id)->update([
+        customer::where('id', $customer_id)->where('user_id', $user_id)->update([
             'name' => $request->name,
             'email' => $request->email,
             'mobile' => $request->mobile
         ]);
+        return response()->json(['status' => 'success', 'message' => 'Customer updated successfully'], 200);
     }
 }
