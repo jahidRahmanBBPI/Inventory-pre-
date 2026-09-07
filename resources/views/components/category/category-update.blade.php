@@ -27,48 +27,66 @@
 
 
 <script>
-
-
-   async function FillUpUpdateForm(id){
+                                
+   async function FillUpUpdateForm(){
        try {
-           document.getElementById('updateID').value=id;
+          let id = document.getElementById('updateID').value;
            showLoader();
            let res=await axios.post("/category-by-id",{id:id},HeaderToken())
            hideLoader();
-           document.getElementById('categoryNameUpdate').value=res.data['rows']['name'];
+           document.getElementById('categoryNameUpdate').value=res.data.name;
+           
        }catch (e) {
            unauthorized(e.response.status)
-       }
+       }   
     }
 
 
+    async function Update(){
+        let categoryName = document.getElementById('categoryNameUpdate').value
+        let updateID = document.getElementById('updateID').value
+        // console.log(updateID)
 
+        document.getElementById('update-modal-close').click();
+        showLoader();
+        let res = await axios.post("/update-category",{name:categoryName,id:updateID},HeaderToken())
+        hideLoader();
 
-    async function Update() {
-
-       try {
-
-           let categoryName = document.getElementById('categoryNameUpdate').value;
-           let updateID = document.getElementById('updateID').value;
-
-           document.getElementById('update-modal-close').click();
-           showLoader();
-           let res = await axios.post("/update-category",{name:categoryName,id:updateID},HeaderToken())
-           hideLoader();
-
-           if(res.data['status']==="success"){
-               document.getElementById("update-form").reset();
-               successToast(res.data['message'])
-               await getList();
-           }
-           else{
-               errorToast(res.data['message'])
-           }
-
-       }catch (e) {
-           unauthorized(e.response.status)
-       }
+        if(res.data.status ==='success'){
+            document.getElementById("update-form").reset();
+            successToast(res.data.message);
+            await getList();
+        }else{
+            errorToast(res.data['message'])
+        }
     }
+
+
+    // async function Update() {
+
+    //    try {
+
+    //        let categoryName = document.getElementById('categoryNameUpdate').value;
+    //        let updateID = document.getElementById('updateID').value;
+
+    //        document.getElementById('update-modal-close').click();
+    //        showLoader();
+    //        let res = await axios.post("/update-category",{name:categoryName,id:updateID},HeaderToken())
+    //        hideLoader();
+
+    //        if(res.data['status']==="success"){
+    //            document.getElementById("update-form").reset();
+    //            successToast(res.data['message'])
+    //            await getList();
+    //        }
+    //        else{
+    //            errorToast(res.data['message'])
+    //        }
+
+    //    }catch (e) {
+    //        unauthorized(e.response.status)
+    //    }
+    // }
 
 
 

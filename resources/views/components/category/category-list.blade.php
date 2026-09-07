@@ -72,6 +72,8 @@ res.data.forEach(function (item, index){
         // alert("Edit Button Clicked " + $(this).data('id'));
         let id = $(this).data('id');
         $('#update-modal').modal('show');
+        $("#updateID").val(id)
+        await FillUpUpdateForm();
     })
 
     $('.delete-btn').on('click', async function (){
