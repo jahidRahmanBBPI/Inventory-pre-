@@ -71,6 +71,8 @@ Route::view('/dashboard', 'pages.dashboard.dashboard-page');
 Route::get("/productPage", [ProductController::class, 'product_page']);
 Route::post('/create-product',[ProductController::class, 'create_product'])->middleware([TokenVerificationMiddleware::class])->withoutMiddleware([VerifyCsrfToken::class]);
 Route::post('/delete-product',[ProductController::class, 'DeleteProduct'])->middleware([TokenVerificationMiddleware::class])->withoutMiddleware([VerifyCsrfToken::class]);
+Route::get('/product-by-id',[ProductController::class, 'ProductById'])->middleware([TokenVerificationMiddleware::class]);
+
 // video 33 min 10 
 // js baki
 // https://planetary-flare-772716.postman.co/workspace/e1b577e8-233c-4947-8713-171bb6f16d04/folder/31042250-307457e2-a419-4647-99c0-aca6dac10ed3

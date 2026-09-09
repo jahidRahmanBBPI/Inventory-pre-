@@ -68,4 +68,10 @@ class ProductController extends Controller
         File::delete($filePath);
         return Product::where('id', $product_id)->where('user_id', $user_id)->delete();
     }
+
+    function ProductById(Request $request) {
+        $user_id = $request->header('id');
+        $product_id = $request->input('id');
+        return Product::where('id', $product_id)->where('user_id', $user_id)->first();
+    }
 }
