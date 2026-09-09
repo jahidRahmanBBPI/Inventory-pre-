@@ -72,6 +72,7 @@ Route::get("/productPage", [ProductController::class, 'product_page']);
 Route::post('/create-product',[ProductController::class, 'create_product'])->middleware([TokenVerificationMiddleware::class])->withoutMiddleware([VerifyCsrfToken::class]);
 Route::post('/delete-product',[ProductController::class, 'DeleteProduct'])->middleware([TokenVerificationMiddleware::class])->withoutMiddleware([VerifyCsrfToken::class]);
 Route::get('/product-by-id',[ProductController::class, 'ProductById'])->middleware([TokenVerificationMiddleware::class]);
+Route::post('/product-list',[ProductController::class, 'ProductList'])->middleware([TokenVerificationMiddleware::class])->withoutMiddleware([VerifyCsrfToken::class]);
 
 // video 33 min 10 
 // js baki
