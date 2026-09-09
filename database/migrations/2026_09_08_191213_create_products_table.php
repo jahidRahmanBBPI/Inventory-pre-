@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('price');
             $table->string('unit');
-            $table->string('ing_url');
+            $table->string('img_url');
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
