@@ -37,7 +37,7 @@
             showLoader();
             let res = await axios.get("/list-customer",HeaderToken());
             hideLoader();
-            console.log(res.data);
+            // console.log(res.data);
 
             let tableList=$("#tableList")
             let tableData=$("#tableData")

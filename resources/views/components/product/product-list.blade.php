@@ -34,13 +34,14 @@
 
 async function getList(){
     showLoader();
-    let res=await axios.get("/list-product");
+    let res=await axios.get("/product-list");
+    // console.log(res)
     hideLoader();
 
-    let tableList=$("#tableList");
-    let tableData=$("tableData");
+    let tableList = $("#tableList");
+    let tableData = $("#tableData");
 
-    // tableData.DataTable().destroy();
+    
     if ($.fn.DataTable.isDataTable('#tableData')) {
             tableData.DataTable().destroy();
         }
@@ -48,9 +49,9 @@ async function getList(){
 
     res.data.forEach(function (item, index){
         let row=`<tr>
-                <td><img class="w-15 h-auto" alt="" src"${item['img_url']}"></td>
+                
                 <td>${item['name']}</td>
-                <td>${item['price']}</td>
+                // <td>${item['price']}</td>
                 <td>${item['unit']}</td>
                 <td>
                     <button data-path="${item['img_url']}" data-id="${item['id']}" class="btn editBtn btn-sm btn-outline-success">Edit</button>    
@@ -64,13 +65,14 @@ async function getList(){
         let id = $(this).data('id');
         let filePath = $(this).data('path');
         await FillUpUpdateForm(id, filePath)
-        $('#updat-modal').modal('show');
+        $('#update-modal').modal('show');
     })
 
     $('.deleteBtn').on('click', function (){
         let id = $(this).data('id');
         let path = $(this).val(id);
         $('#deleteFilePath').val(path)
+        $('#delete-modal').modal('show');
     })
 
     new DataTable('#tableData', {

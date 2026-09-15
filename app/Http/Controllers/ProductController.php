@@ -22,14 +22,14 @@ class ProductController extends Controller
 
         // Prepare File Name & Path
 
-        $img = $request->file('img');
-        $t = time();
-        $file_name=$img->getClientOriginalName();
-        $img_name="{$user_id}--{$t}--{$file_name}";
-        $img_ul="uploads/{$img_name}";
+        // $img = $request->file('img');
+        // $t = time();
+        // $file_name=$img->getClientOriginalName();
+        // $img_name="{$user_id}--{$t}--{$file_name}";
+        // $img_ul="uploads/{$img_name}";
 
-        // Upload File
-        $img->move(public_path('uploads/products'), $img_name);
+        // // Upload File
+        // $img->move(public_path('uploads/products'), $img_name);
 
 
         try{
@@ -39,21 +39,17 @@ class ProductController extends Controller
             'name' => $name,
             'price' => $price,
             'unit' => $unit,
-            'img_url' => $img_name,
+            // 'img_url' => $img_name,
         ]);
 
-        if($data){
             return response()->json([
             'status' => 'Success',
             'message' => 'Product Created Successful',
             ]);
-        }else{
-            return response()->json([
-            'status' => 'Fail',
-            'message' => 'Something Went Wrong!',
-            ]);
+        
         }
-        }catch(Exception $e){
+         
+        catch(Exception $e){
           return response()->json([
             'status' => 'Fail',
             'message' => 'Something Went Wrong!'

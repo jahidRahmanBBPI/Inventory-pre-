@@ -36,7 +36,7 @@
 </div>
 
 
-{{-- <script>
+<script>
 
 
     async function UpdateFillCategoryDropDown(){
@@ -100,4 +100,4 @@
         }
 
     }
-</script> --}}
+</script>

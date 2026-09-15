@@ -39,7 +39,81 @@
 
 
 
+<script>
+    FillCategoryDropDown();
+    async function FillCategoryDropDown(){
+        let res = await axios.get("/list-category",HeaderToken())
+        res.data.forEach(function(item, i){
+            let option = `<option value = "${item['id']}">${item['name']}</option>`
+            $("#productCategory").append(option);
+        })
+    }
 
+    
+async function Save(){
+
+    let productCategory=document.getElementById('productCategory').value;
+    let productName = document.getElementById('productName').value;
+    let productPrice = document.getElementById('productPrice').value;
+    let productUnit = document.getElementById('productUnit').value;
+
+    // Frontend Validation
+    if(productCategory.trim() === ""){
+        errorToast("Please select a category!");
+        return;
+    }
+
+    if(productName.trim() === ""){
+        errorToast("Please enter product name!");
+        return;
+    }
+
+    if(productPrice.trim() === ""){
+        errorToast("Please enter product price!");
+        return;
+    }
+
+    if(productUnit.trim() === ""){
+        errorToast("Please enter product unit!");
+        return;
+    }
+
+    // 
+    let PostBody = {
+        "name":productName,
+        "price":productPrice,
+        "unit":productUnit,
+        "category_id":productCategory
+    }
+
+    showLoader();
+    try {
+    let res = await axios.post("/create-product", PostBody, HeaderToken());
+
+    if(res.data['status']==="Success"){
+        successToast(res.data['message'])
+        document.getElementById("save-form").reset();
+        document.getElementById('modal-close').click();
+        await getList();
+    }
+    else{
+
+        errorToast(res.data['message'])
+
+    }
+    } catch(error) {
+        if(error.response){
+            errorToast(
+                error.response.data.message || "Something went wrong!"
+            );
+        }else{
+            errorToast("Network error!");
+        }
+    }finally {
+        hideLoader();
+    }
+}
+</script>
 
 
 {{-- <script>
