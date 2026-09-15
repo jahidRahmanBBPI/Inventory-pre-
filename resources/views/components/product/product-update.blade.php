@@ -37,67 +37,97 @@
 
 
 <script>
-
-
-    async function UpdateFillCategoryDropDown(){
-        let res = await axios.get("/list-category",HeaderToken())
-        res.data['rows'].forEach(function (item,i) {
+UpdateFillCategoryDropDown();
+async function UpdateFillCategoryDropDown(){
+    
+        let res = await axios.get("/list-category")
+        res.data.forEach(function (item,i) {
             let option=`<option value="${item['id']}">${item['name']}</option>`
             $("#productCategoryUpdate").append(option);
         })
     }
 
-
-    async function FillUpUpdateForm(id){
-        try {
-            document.getElementById('updateID').value=id;
-            showLoader();
-            await UpdateFillCategoryDropDown();
-            let res=await axios.post("/product-by-id",{id:id.toString()},HeaderToken())
-            hideLoader();
-            document.getElementById('productNameUpdate').value=res.data['rows']['name'];
-            document.getElementById('productPriceUpdate').value=res.data['rows']['price'];
-            document.getElementById('productUnitUpdate').value=res.data['rows']['unit'];
-            document.getElementById('productCategoryUpdate').value=res.data['rows']['category_id'];
-        }catch (e) {
-            unauthorized(e.response.status)
-        }
+async function FillUpUpdateForm(id){
+    try{
+        showLoader();
+        await UpdateFillCategoryDropDown();
+        let res = await axios.post("/product-by-id", {id:id},HeaderToken())
+        hideLoader();
+        document.getElementById('productNameUpdate').value=res.data.name;
+        document.getElementById('productPriceUpdate').value=res.data.price;
+        document.getElementById('productUnitUpdate').value=res.data.unit;
+        document.getElementById('productCategoryUpdate').value=res.data.category_id;
+    }catch(e){
+        ErrorToast("Something Went Wrong!")
     }
+}
 
+async function update(){
+    try{
+        let ProductCategoryUpdate = document.getElementById('productCategoryUpdate').value;
+        let ProductNameUpdate = document.getElementById('productNameUpdate').value;
+        let ProductPriceUpdate = document.getElementById('productPriceUpdate').value;
+        let ProductUnitUpdate = document.getElementById('productUnitUpdate').value;
+        let updateID = document.getElementById('updateID').value;
+        document.getElementById('update-modal-close').click();
 
-
-    async function update() {
-
-        try {
-            let productCategoryUpdate=document.getElementById('productCategoryUpdate').value;
-            let productNameUpdate=document.getElementById('productNameUpdate').value;
-            let productPriceUpdate=document.getElementById('productPriceUpdate').value;
-            let productUnitUpdate=document.getElementById('productUnitUpdate').value;
-            let updateID=document.getElementById('updateID').value;
-            document.getElementById('update-modal-close').click();
-
-            let PostBody= {
-                "name":productNameUpdate,
-                "price":productPriceUpdate,
-                "unit":productUnitUpdate,
-                "category_id":productCategoryUpdate,
-                "id":updateID
-            }
-
-            showLoader();
-            let res = await axios.post("/update-product",PostBody,HeaderToken())
-            hideLoader();
-            if(res.data['status']==="success"){
-                successToast(res.data['message'])
-                await getList();
-            }
-            else{
-                errorToast(res.data['message'])
-            }
-
-        }catch (e) {
-            unauthorized(e.response.status)
+        let PostBody = {
+            "name": ProductNameUpdate,
+            "price": ProductPriceUpdate,
+            "unit": ProductUnitUpdate,
+            "category_id": ProductCategoryUpdate,
+            "id": updateID
         }
 
+        console.log(PostBody)
+        showLoader();
+        let res = await axios.post("/product-update", PostBody, HeaderToken())
+        
+        hideLoader();
+        if(res.data.status === "success"){
+            successToast(res.data.message)
+            await getList();
+        }else{
+            ErrorToast("Something Went Wrong!");
+        }
+    }catch(e){
+        ErrorToast("Product update failed. Please try again.")
     }
+}
+
+
+    // async function update() {
+
+    //     try {
+    //         let productCategoryUpdate=document.getElementById('productCategoryUpdate').value;
+    //         let productNameUpdate=document.getElementById('productNameUpdate').value;
+    //         let productPriceUpdate=document.getElementById('productPriceUpdate').value;
+    //         let productUnitUpdate=document.getElementById('productUnitUpdate').value;
+    //         let updateID=document.getElementById('updateID').value;
+    //         document.getElementById('update-modal-close').click();
+
+    //         let PostBody= {
+    //             "name":productNameUpdate,
+    //             "price":productPriceUpdate,
+    //             "unit":productUnitUpdate,
+    //             "category_id":productCategoryUpdate,
+    //             "id":updateID
+    //         }
+
+    //         showLoader();
+    //         let res = await axios.post("/update-product",PostBody,HeaderToken())
+    //         hideLoader();
+    //         if(res.data['status']==="success"){
+    //             successToast(res.data['message'])
+    //             await getList();
+    //         }
+    //         else{
+    //             errorToast(res.data['message'])
+    //         }
+
+    //     }catch (e) {
+    //         unauthorized(e.response.status)
+    //     }
+
+    // }
 </script>

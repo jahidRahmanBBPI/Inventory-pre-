@@ -80,43 +80,57 @@ class ProductController extends Controller
         $user_id=$request->header('id');
         $product_id=$request->input('id');
 
-        if($request->hasFile('img')){
-            // Upload new File
-            $img=$request->file('img');
-            $t=time();
-            $file_name=$img->getClientOriginalName();
-            $img_name="{$user_id}--{$t}--{$file_name}";
-            $img_url="uploads/products/{$img_name}";
-            $img->move(public_path('uploads/products'),$img_name);
-
-
-            // Delete Old File
-            $photo = $request->input('file_path');
-            $path = public_path('uploads/products/' .$photo);
-            File::delete($path);
-
-            // dd([
-            //     'photo' => $photo,
-            //     'path' => $path,
-            //     'exists' => File::exists($path),
-            // ]);
-
-
-            // Update Product
-            return Product::where('id', $product_id)->where('user_id', $user_id)->update([
-                'name'=>$request->input('name'),
-                'price'=>$request->input('price'),
-                'unit'=>$request->input('unit'),
-                'img_url'=>$img_url,
-                'category_id'=>$request->input('category_id')
-            ]);
-        }else{
-            return Product::where('id', $product_id)->where('user_id', $user_id)->update([
+        Product::where('id', $product_id)->where('user_id', $user_id)->update([
                 'name'=>$request->input('name'),
                 'price'=>$request->input('price'),
                 'unit'=>$request->input('unit'),
                 'category_id'=>$request->input('category_id'),
             ]);
-        }
+        
+        return response()->json([
+            'status'=> "success",
+            'message'=>"Product Updated successfully!"
+        ]);
+
+        // if($request->hasFile('img')){
+        //     // Upload new File
+        //     $img=$request->file('img');
+        //     $t=time();
+        //     $file_name=$img->getClientOriginalName();
+        //     $img_name="{$user_id}--{$t}--{$file_name}";
+        //     $img_url="uploads/products/{$img_name}";
+        //     $img->move(public_path('uploads/products'),$img_name);
+
+
+        //     // Delete Old File
+        //     $photo = $request->input('file_path');
+        //     $path = public_path('uploads/products/' .$photo);
+        //     File::delete($path);
+
+        //     // dd([
+        //     //     'photo' => $photo,
+        //     //     'path' => $path,
+        //     //     'exists' => File::exists($path),
+        //     // ]);
+
+
+        //     // Update Product
+        //     return Product::where('id', $product_id)->where('user_id', $user_id)->update([
+        //         'name'=>$request->input('name'),
+        //         'price'=>$request->input('price'),
+        //         'unit'=>$request->input('unit'),
+        //         'img_url'=>$img_url,
+        //         'category_id'=>$request->input('category_id')
+        //     ]);
+        // }else{
+        //     return Product::where('id', $product_id)->where('user_id', $user_id)->update([
+        //         'name'=>$request->input('name'),
+        //         'price'=>$request->input('price'),
+        //         'unit'=>$request->input('unit'),
+        //         'category_id'=>$request->input('category_id'),
+        //     ]);
+        // }
+
+        
     }
 }

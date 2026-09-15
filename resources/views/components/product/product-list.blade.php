@@ -63,8 +63,10 @@ async function getList(){
 
     $('.editBtn').on('click', async function(){
         let id = $(this).data('id');
-        let filePath = $(this).data('path');
-        await FillUpUpdateForm(id, filePath)
+        // let filePath = $(this).data('path');
+        // await FillUpUpdateForm(id, filePath)
+        $('#updateID').val(id)
+        await FillUpUpdateForm(id)
         $('#update-modal').modal('show');
     })
 
@@ -77,7 +79,7 @@ async function getList(){
     })
 
     new DataTable('#tableData', {
-        order:[[0, 'desc']],
+        order:[[0, 'asc']],
         lengthMenu:[5,10,15,20,25]
     });
 }
