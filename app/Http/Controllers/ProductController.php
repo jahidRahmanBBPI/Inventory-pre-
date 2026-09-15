@@ -60,8 +60,8 @@ class ProductController extends Controller
     function DeleteProduct(Request $request){
         $user_id=$request->header('id');
         $product_id=$request->input('id');
-        $filePath=$request->input('file_path');
-        File::delete($filePath);
+        // $filePath=$request->input('file_path');
+        // File::delete($filePath);
         return Product::where('id', $product_id)->where('user_id', $user_id)->delete();
     }
 
