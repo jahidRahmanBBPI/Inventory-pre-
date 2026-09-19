@@ -74,9 +74,9 @@ async function getList(){
 
     $('.deleteBtn').on('click', function (){
         let id = $(this).data('id');
-        let path = $(this).val(id);
-        // $('#deleteFilePath').val(path)
+        let path = $(this).data('path');
         $('#deleteID').val(id)
+        $('#deleteFilePath').val(path)
         $('#delete-modal').modal('show');
     })
 
