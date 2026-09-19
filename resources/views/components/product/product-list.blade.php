@@ -14,6 +14,7 @@
             <table class="table" id="tableData">
                 <thead>
                 <tr class="bg-light">
+                    <th>Image</th>
                     <th>Name</th>
                     <th>Price</th>
                     <th>Unit</th>
@@ -49,9 +50,11 @@ async function getList(){
 
     res.data.forEach(function (item, index){
         let row=`<tr>
-                
+                <td>
+                    <div class="p-0 "><img  class="w-15" src ="{{ asset('uploads/products/') }}/${item['img_url']}"/></div>
+                </td>
                 <td>${item['name']}</td>
-                // <td>${item['price']}</td>
+                <td>${item['price']}</td>
                 <td>${item['unit']}</td>
                 <td>
                     <button data-path="${item['img_url']}" data-id="${item['id']}" class="btn editBtn btn-sm btn-outline-success">Edit</button>    

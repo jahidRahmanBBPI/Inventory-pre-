@@ -93,15 +93,6 @@ async function Save(){
         return;
     }
 
-    
-    // let PostBody = {
-    //     "name":productName,
-    //     "price":productPrice,
-    //     "unit":productUnit,
-    //     "category_id":productCategory,
-    //     "img_url":productImg
-    // }
-
     let PostBody = new FormData();
 
     PostBody.append("name", productName);
@@ -112,14 +103,14 @@ async function Save(){
 
 
 
-    function config(){
-        return {
-            headers:{
-                'Content-Type':'multipart/form-data'
-            }
-        }
-    }
-    console.log(PostBody)
+    // function config(){
+    //     return {
+    //         headers:{
+    //             'Content-Type':'multipart/form-data'
+    //         }
+    //     }
+    // }
+    // console.log(PostBody)
 
     showLoader();
     try {

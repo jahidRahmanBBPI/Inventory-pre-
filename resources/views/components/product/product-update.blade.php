@@ -76,23 +76,39 @@ async function FillUpUpdateForm(id, filePath){
 }
 
 async function update(){
+    // console.log(img)
     try{
         let ProductCategoryUpdate = document.getElementById('productCategoryUpdate').value;
         let ProductNameUpdate = document.getElementById('productNameUpdate').value;
         let ProductPriceUpdate = document.getElementById('productPriceUpdate').value;
         let ProductUnitUpdate = document.getElementById('productUnitUpdate').value;
+        // let ProductImgageUpdate = document.getElementById('oldImg').value;
+        let ProductImageUpdate = document.getElementById('productImageUpdate').files[0];
         let updateID = document.getElementById('updateID').value;
         document.getElementById('update-modal-close').click();
 
-        let PostBody = {
-            "name": ProductNameUpdate,
-            "price": ProductPriceUpdate,
-            "unit": ProductUnitUpdate,
-            "category_id": ProductCategoryUpdate,
-            "id": updateID
+        // let PostBody = {
+        //     "name": ProductNameUpdate,
+        //     "price": ProductPriceUpdate,
+        //     "unit": ProductUnitUpdate,
+        //     "category_id": ProductCategoryUpdate,
+        //     "id": updateID,
+        //     "img": ProductImageUpdate
+        // }
+
+        let PostBody = new FormData();
+
+        PostBody.append("name", ProductNameUpdate);
+        PostBody.append("price", ProductPriceUpdate);
+        PostBody.append("unit", ProductUnitUpdate);
+        PostBody.append("category_id", ProductCategoryUpdate);
+        PostBody.append("id", updateID);
+
+        if (ProductImageUpdate) {
+            PostBody.append("img", ProductImageUpdate);
         }
 
-        console.log(PostBody)
+        // console.log(PostBody)
         showLoader();
         let res = await axios.post("/product-update", PostBody, HeaderToken())
         
@@ -106,8 +122,8 @@ async function update(){
     }catch(e){
         ErrorToast("Product update failed. Please try again.")
     }
-}
 
+    }
 
     // async function update() {
 
