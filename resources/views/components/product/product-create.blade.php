@@ -24,6 +24,9 @@
                                 <label class="form-label mt-2">Unit</label>
                                 <input type="text" class="form-control" id="productUnit">
 
+                                <label class="form-label mt-2">Image</label>
+                                <input type="file" class="form-control" id="productImg">
+
                             </div>
                         </div>
                     </div>
@@ -56,7 +59,9 @@ async function Save(){
     let productName = document.getElementById('productName').value;
     let productPrice = document.getElementById('productPrice').value;
     let productUnit = document.getElementById('productUnit').value;
+    let productImg = document.getElementById('productImg').files[0];
 
+    // console.log(productImg);
     // Frontend Validation
     if(productCategory.trim() === ""){
         errorToast("Please select a category!");
@@ -77,14 +82,44 @@ async function Save(){
         errorToast("Please enter product unit!");
         return;
     }
-
-    // 
-    let PostBody = {
-        "name":productName,
-        "price":productPrice,
-        "unit":productUnit,
-        "category_id":productCategory
+    if(!productImg){
+        errorToast("Please select a product image!");
+        return;
     }
+
+    let allwoedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    if(!allwoedTypes.includes(productImg.type)){
+        errorToast("Please select a JPG, JPEG or PNG image!")
+        return;
+    }
+
+    
+    // let PostBody = {
+    //     "name":productName,
+    //     "price":productPrice,
+    //     "unit":productUnit,
+    //     "category_id":productCategory,
+    //     "img_url":productImg
+    // }
+
+    let PostBody = new FormData();
+
+    PostBody.append("name", productName);
+    PostBody.append("price", productPrice);
+    PostBody.append("unit", productUnit);
+    PostBody.append("category_id", productCategory);
+    PostBody.append("img_url", productImg);
+
+
+
+    function config(){
+        return {
+            headers:{
+                'Content-Type':'multipart/form-data'
+            }
+        }
+    }
+    console.log(PostBody)
 
     showLoader();
     try {

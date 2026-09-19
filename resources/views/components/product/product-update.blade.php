@@ -19,6 +19,16 @@
                                 <input type="text" class="form-control" id="productPriceUpdate">
                                 <label class="form-label mt-2">Unit</label>
                                 <input type="text" class="form-control" id="productUnitUpdate">
+                                <br/>
+                                <img class="w-15" id="oldImg" src="{{ asset('uploads/products/1789818275_9142abeffbf7a6dcb49b7177b9b4c2ce.png') }}"/>
+                                
+                                <br/>
+
+                                <label class="form-label mt-2">Image</label>
+                                <input
+                                onchange="if(this.files[0]) oldImg.src=window.URL.createObjectURL(this.files[0])"
+                                type="file" class="form-control" id="productImageUpdate">
+
                                 <input type="text" class="d-none" id="updateID">
                             </div>
                         </div>
@@ -47,7 +57,8 @@ async function UpdateFillCategoryDropDown(){
         })
     }
 
-async function FillUpUpdateForm(id){
+async function FillUpUpdateForm(id, filePath){
+    // console.log(filePath)
     try{
         showLoader();
         await UpdateFillCategoryDropDown();
@@ -57,6 +68,8 @@ async function FillUpUpdateForm(id){
         document.getElementById('productPriceUpdate').value=res.data.price;
         document.getElementById('productUnitUpdate').value=res.data.unit;
         document.getElementById('productCategoryUpdate').value=res.data.category_id;
+        document.getElementById('oldImg').src= "{{ asset('uploads/products') }}"+"/"+filePath ;
+        // document.getElementById('oldImg').src="uploads/products/"+filePath;
     }catch(e){
         ErrorToast("Something Went Wrong!")
     }

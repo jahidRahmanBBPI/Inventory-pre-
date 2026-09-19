@@ -75,6 +75,6 @@ Route::post('/product-by-id',[ProductController::class, 'ProductById'])->middlew
 Route::get('/product-list',[ProductController::class, 'ProductList'])->middleware([TokenVerificationMiddleware::class])->withoutMiddleware([VerifyCsrfToken::class]);
 Route::post('/product-update',[ProductController::class, 'UpdateProduct'])->middleware([TokenVerificationMiddleware::class])->withoutMiddleware([VerifyCsrfToken::class]);
 
-// video 36
+// video 3
 // js baki
 // https://planetary-flare-772716.postman.co/workspace/e1b577e8-233c-4947-8713-171bb6f16d04/folder/31042250-307457e2-a419-4647-99c0-aca6dac10ed3

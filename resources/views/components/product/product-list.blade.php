@@ -63,10 +63,9 @@ async function getList(){
 
     $('.editBtn').on('click', async function(){
         let id = $(this).data('id');
-        // let filePath = $(this).data('path');
-        // await FillUpUpdateForm(id, filePath)
+        let filePath = $(this).data('path');
         $('#updateID').val(id)
-        await FillUpUpdateForm(id)
+        await FillUpUpdateForm(id, filePath)
         $('#update-modal').modal('show');
     })
 

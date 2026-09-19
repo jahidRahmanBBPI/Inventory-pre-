@@ -19,20 +19,43 @@ class ProductController extends Controller
         $name = $request->input('name');
         $price = $request->input('price');
         $unit = $request->input('unit');
+        $img = $request->file('img_url');
+        // return $img->getClientOriginalName();
 
-        // Prepare File Name & Path
-
-        // $img = $request->file('img');
-        // $t = time();
-        // $file_name=$img->getClientOriginalName();
-        // $img_name="{$user_id}--{$t}--{$file_name}";
-        // $img_ul="uploads/{$img_name}";
-
-        // // Upload File
-        // $img->move(public_path('uploads/products'), $img_name);
+        if ($request->hasFile('img_url')) {
+        
+            $img_name = time().'_' . md5(uniqid()) . '.'. $img->getClientOriginalExtension();
+            $img->move(public_path('uploads/products'), $img_name);
 
 
-        try{
+            try{
+            $data = Product::insert([
+            'img_url' => $img_name,
+            'user_id' => $user_id,
+            'category_id' => $category_id,
+            'name' => $name,
+            'price' => $price,
+            'unit' => $unit,
+            // 'img_url' => $img_name,
+        ]);
+
+            return response()->json([
+            'status' => 'Success',
+            'message' => 'Product Created Successful',
+            ]);
+        
+        }
+         
+        catch(Exception $e){
+          return response()->json([
+            'status' => 'Fail',
+            'message' => 'Something Went Wrong!'
+          ],401);
+        }
+
+            // return "File received";
+        }else {
+             try{
             $data = Product::insert([
             'user_id' => $user_id,
             'category_id' => $category_id,
@@ -55,6 +78,8 @@ class ProductController extends Controller
             'message' => 'Something Went Wrong!'
           ],401);
         }
+    }
+       
     }
 
     function DeleteProduct(Request $request){
