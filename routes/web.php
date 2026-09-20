@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\TokenVerificationMiddleware;
@@ -46,8 +47,10 @@ Route::view('/sendOtp','pages.auth.send-otp-page');
 Route::view('/verifyOtp','pages.auth.verify-otp-page');
 Route::view('/resetPassword','pages.auth.reset-pass-page');//->middleware([TokenVerificationMiddleware::class])
 Route::view('/userProfile','pages.dashboard.profile-page')->middleware([TokenVerificationMiddleware::class]);
+Route::get('/invoicePage',[InvoiceController::class, 'InvoicePage'])->middleware([TokenVerificationMiddleware::class]);
+Route::get('/salePage', [InvoiceController::class, 'SalePage'])->middleware([TokenVerificationMiddleware::class]);
 
-// Category Routes
+// Category API
 Route::get('/categoryPage', [CategoryController::class, 'CategoryPage'])->middleware([TokenVerificationMiddleware::class]);
 Route::post("/create-category",[CategoryController::class, 'CategoryCreate'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
 Route::get("/list-category",[CategoryController::class, 'CategoryList'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
@@ -74,6 +77,13 @@ Route::post('/delete-product',[ProductController::class, 'DeleteProduct'])->midd
 Route::post('/product-by-id',[ProductController::class, 'ProductById'])->middleware([TokenVerificationMiddleware::class]);
 Route::get('/product-list',[ProductController::class, 'ProductList'])->middleware([TokenVerificationMiddleware::class])->withoutMiddleware([VerifyCsrfToken::class]);
 Route::post('/product-update',[ProductController::class, 'UpdateProduct'])->middleware([TokenVerificationMiddleware::class])->withoutMiddleware([VerifyCsrfToken::class]);
+
+// Invoice API
+Route::post("/invoice-create", [InvoiceController::class, 'invoiceCreate'])->middleware([TokenVerificationMiddleware::class]);
+Route::get("/invoice-select", [InvoiceController::class, 'invoiceSelect'])->middleware([TokenVerificationMiddleware::class]);
+Route::get("/invoice-details", [InvoiceController::class, 'InvoiceDetails'])->middleware([TokenVerificationMiddleware::class]);
+
+Route::get("/invoice-delete", [InvoiceController::class, 'invoiceDelete'])->middleware([TokenVerificationMiddleware::class]);
 
 // video 3
 // js baki
