@@ -12,10 +12,16 @@ use Illuminate\Support\Facades\DB;
 class InvoiceController extends Controller
 {
     function InvoicePage(){
-
+        return view('pages.dashboard.invoice-page');
     }
 
-    function SalePage(){}
+    function SalePage(){
+        return view('pages.dashboard.sale-page');
+    }
+
+    function ReportPage(){
+        return view('pages.dashboard.report-page');
+    }
 
     function invoiceCreate(Request $request){
         DB::beginTransaction();
@@ -35,6 +41,7 @@ class InvoiceController extends Controller
                 'vat'=>$vat,
                 'payable'=>$payable,
                 'customer_id'=>$customer_id,
+                'user_id'=>$user_id
             ]);
 
             $invoiceID = $invoice->id;
@@ -82,9 +89,12 @@ class InvoiceController extends Controller
         DB::beginTransaction();
         try {
             $user_id= $request->header('id');
-            InvoiceProduct::where('invoice_id', $request->input('inv_id'))
+            $validity = InvoiceProduct::where('invoice_id', $request->input('inv_id'))
                 ->where('user_id',$user_id)
                 ->delete();
+            if(!$validity){
+                return "Invoice Not Found!";
+            }
             Invoice::where('id',$request->input('inv_id'))->delete();
             DB::commit();
             return 1;

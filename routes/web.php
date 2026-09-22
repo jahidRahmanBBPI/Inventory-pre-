@@ -49,6 +49,7 @@ Route::view('/resetPassword','pages.auth.reset-pass-page');//->middleware([Token
 Route::view('/userProfile','pages.dashboard.profile-page')->middleware([TokenVerificationMiddleware::class]);
 Route::get('/invoicePage',[InvoiceController::class, 'InvoicePage'])->middleware([TokenVerificationMiddleware::class]);
 Route::get('/salePage', [InvoiceController::class, 'SalePage'])->middleware([TokenVerificationMiddleware::class]);
+Route::get('/reportPage', [InvoiceController::class, 'ReportPage'])->middleware([TokenVerificationMiddleware::class]);
 
 // Category API
 Route::get('/categoryPage', [CategoryController::class, 'CategoryPage'])->middleware([TokenVerificationMiddleware::class]);
@@ -79,12 +80,12 @@ Route::get('/product-list',[ProductController::class, 'ProductList'])->middlewar
 Route::post('/product-update',[ProductController::class, 'UpdateProduct'])->middleware([TokenVerificationMiddleware::class])->withoutMiddleware([VerifyCsrfToken::class]);
 
 // Invoice API
-Route::post("/invoice-create", [InvoiceController::class, 'invoiceCreate'])->middleware([TokenVerificationMiddleware::class]);
+Route::post("/invoice-create", [InvoiceController::class, 'invoiceCreate'])->middleware([TokenVerificationMiddleware::class])->withoutMiddleware([VerifyCsrfToken::class]);
 Route::get("/invoice-select", [InvoiceController::class, 'invoiceSelect'])->middleware([TokenVerificationMiddleware::class]);
 Route::get("/invoice-details", [InvoiceController::class, 'InvoiceDetails'])->middleware([TokenVerificationMiddleware::class]);
 
 Route::get("/invoice-delete", [InvoiceController::class, 'invoiceDelete'])->middleware([TokenVerificationMiddleware::class]);
 
-// video 3
+// video 41
 // js baki
 // https://planetary-flare-772716.postman.co/workspace/e1b577e8-233c-4947-8713-171bb6f16d04/folder/31042250-307457e2-a419-4647-99c0-aca6dac10ed3
