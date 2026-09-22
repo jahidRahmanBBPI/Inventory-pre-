@@ -20,7 +20,8 @@ class InvoiceController extends Controller
     }
 
     function ReportPage(){
-        return view('pages.dashboard.report-page');
+        // return view('pages.dashboard.report-page');
+        
     }
 
     function invoiceCreate(Request $request){
@@ -77,11 +78,16 @@ class InvoiceController extends Controller
         $customerDetails = customer::where('user_id', $user_id)->where('id', $request->input('cus_id'))->first();
         $InvoiceTotal = Invoice::where('user_id', $user_id)->where('id', $request->input('inv_id'))->first();
         $invoiceProduct = InvoiceProduct::where('invoice_id', $request->input('inv_id'))->where('user_id', $user_id)->get();
-
+        $invoiceProductwithnamd = InvoiceProduct::with('product')
+            ->where('invoice_id', $request->input('inv_id'))
+            ->where('user_id', $user_id)
+            ->get();
+       
         return array(
             'customer'=>$customerDetails, 
             'invoice'=>$InvoiceTotal,
-            'product'=>$invoiceProduct,
+            // 'product'=>$invoiceProduct,
+            'product'=>$invoiceProductwithnamd,
         );
     }
 

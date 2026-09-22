@@ -64,31 +64,33 @@
 
 
     async function InvoiceDetails(cus_id,inv_id) {
+        
         showLoader()
         let res=await axios.post("/invoice-details",{cus_id:cus_id,inv_id:inv_id},HeaderToken())
         hideLoader();
 
-        document.getElementById('CName').innerText=res.data['rows']['customer']['name']
-        document.getElementById('CId').innerText=res.data['rows']['customer']['user_id']
-        document.getElementById('CEmail').innerText=res.data['rows']['customer']['email']
-        document.getElementById('total').innerText=res.data['rows']['invoice']['total']
-        document.getElementById('payable').innerText=res.data['rows']['invoice']['payable']
-        document.getElementById('vat').innerText=res.data['rows']['invoice']['vat']
-        document.getElementById('discount').innerText=res.data['rows']['invoice']['discount']
+        document.getElementById('CName').innerText=res.data['customer']['name']
+        document.getElementById('CId').innerText=res.data['customer']['user_id']
+        document.getElementById('CEmail').innerText=res.data['customer']['email']
+        document.getElementById('total').innerText=res.data['invoice']['total']
+        document.getElementById('payable').innerText=res.data['invoice']['payable']
+        document.getElementById('vat').innerText=res.data['invoice']['vat']
+        document.getElementById('discount').innerText=res.data['invoice']['discount']
 
 
         let invoiceList=$('#invoiceList');
 
         invoiceList.empty();
 
-        res.data['rows']['product'].forEach(function (item,index) {
-            let row=`<tr class="text-xs">
-                        <td>${item['product']['name']}</td>
-                        <td>${item['qty']}</td>
-                        <td>${item['sale_price']}</td>
-                     </tr>`
-            invoiceList.append(row)
-        });
+        res.data.product.forEach(function(item, index) {
+    let row = `<tr class="text-xs"> 
+        <td>${item.product.name}</td> 
+        <td>${item['qty']}</td> 
+        <td>${item['sale_price']}</td> 
+        </tr>`;
+
+    invoiceList.append(row);
+});
 
 
 

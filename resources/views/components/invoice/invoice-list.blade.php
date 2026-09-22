@@ -51,7 +51,7 @@ async function getList() {
     tableData.DataTable().destroy();
     tableList.empty();
 
-    res.data['rows'].forEach(function (item,index) {
+    res.data.forEach(function (item,index) {
         let row=`<tr>
                     <td>${index+1}</td>
                     <td>${item['customer']['name']}</td>
@@ -69,9 +69,10 @@ async function getList() {
     })
 
     $('.viewBtn').on('click', async function () {
-        let id= $(this).data('id');
-        let cus= $(this).data('cus');
-        await InvoiceDetails(cus,id)
+        let inv_id= $(this).data('id');
+        let cus_id= $(this).data('cus');
+        await InvoiceDetails(cus_id,inv_id)
+        $("#details-modal").modal('show')
     })
 
     $('.deleteBtn').on('click',function () {
@@ -81,7 +82,7 @@ async function getList() {
     })
 
     new DataTable('#tableData',{
-        order:[[0,'desc']],
+        order:[[0,'asc']],
         lengthMenu:[5,10,15,20,30]
     });
 
