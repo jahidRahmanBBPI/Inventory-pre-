@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -67,7 +68,7 @@ Route::post("/delete-customer", [CustomerController::class, 'customerDelete'])->
 Route::post("/update-customer", [CustomerController::class, 'customerUpdate'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
 Route::post("/customer-by-id", [CustomerController::class, 'customerById'])->withoutMiddleware(VerifyCsrfToken::class)->middleware([TokenVerificationMiddleware::class]);
 Route::view('/customerPage', 'pages.dashboard.customer-page')->middleware([TokenVerificationMiddleware::class]);
-Route::view('/dashboard', 'pages.dashboard.dashboard-page');
+Route::get('/dashboard',[DashboardController::class, 'DashboardPage'])->middleware([TokenVerificationMiddleware::class]);
 
 
 
@@ -86,6 +87,9 @@ Route::post("/invoice-details", [InvoiceController::class, 'InvoiceDetails'])->m
 
 Route::get("/invoice-delete", [InvoiceController::class, 'invoiceDelete'])->middleware([TokenVerificationMiddleware::class]);
 
-// video 41
+
+// Dashboard API
+Route::post("/dashboard-details", [DashboardController::class, 'Summary'])->middleware([TokenVerificationMiddleware::class])->withoutMiddleware([VerifyCsrfToken::class]);
+// video 42
 // js baki
 // https://planetary-flare-772716.postman.co/workspace/e1b577e8-233c-4947-8713-171bb6f16d04/folder/31042250-307457e2-a419-4647-99c0-aca6dac10ed3

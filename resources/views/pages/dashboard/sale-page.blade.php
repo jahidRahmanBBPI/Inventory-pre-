@@ -6,6 +6,7 @@
                 <div class="shadow-sm h-100 bg-white rounded-3 p-3">
                     <div class="row">
                         <div class="col-8">
+                            {{-- customer details --}}
                             <span class="text-bold text-dark">BILLED TO </span>
                             <p class="text-xs mx-0 my-1">Name:  <span id="CName"></span> </p>
                             <p class="text-xs mx-0 my-1">Email:  <span id="CEmail"></span></p>
@@ -17,7 +18,9 @@
                             <p class="text-xs mx-0 my-1">Date: {{ date('Y-m-d') }} </p>
                         </div>
                     </div>
+                    
                     <hr class="mx-0 my-2 p-0 bg-secondary"/>
+                    {{-- product details --}}
                     <div class="row">
                         <div class="col-12">
                             <table class="table w-100" id="invoiceTable">
@@ -55,7 +58,7 @@
                     </div>
                 </div>
             </div>
-
+            {{-- product list --}}
             <div class="col-md-4 col-lg-4 p-2">
                 <div class="shadow-sm h-100 bg-white rounded-3 p-3">
                     <table class="table  w-100" id="productTable">
@@ -71,7 +74,7 @@
                     </table>
                 </div>
             </div>
-
+            {{-- customer List --}}
             <div class="col-md-4 col-lg-4 p-2">
                 <div class="shadow-sm h-100 bg-white rounded-3 p-3">
                     <table class="table table-sm w-100" id="customerTable">
@@ -100,6 +103,7 @@
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">Add Product</h6>
                 </div>
+                {{-- invoice product details --}}
                 <div class="modal-body">
                     <form id="add-form">
                         <div class="container">
@@ -252,9 +256,9 @@
             let res=await axios.get("/list-customer",HeaderToken());
             let customerList=$("#customerList");
             let customerTable=$("#customerTable");
-            customerTable.DataTable().destroy();
+            // customerTable.DataTable().destroy();
             customerList.empty();
-            res.data['rows'].forEach(function (item,index) {
+            res.data.forEach(function (item,index) {
                 let row=`<tr class="text-xs">
                         <td><i class="bi bi-person"></i> ${item['name']}</td>
                         <td><a data-name="${item['name']}" data-email="${item['email']}" data-id="${item['id']}" class="btn btn-outline-dark addCustomer  text-xxs px-2 py-1  btn-sm m-0">Add</a></td>
@@ -282,13 +286,13 @@
 
 
         async function ProductList(){
-            let res=await axios.get("/list-product",HeaderToken());
+            let res=await axios.get("/product-list",HeaderToken());
             let productList=$("#productList");
             let productTable=$("#productTable");
             productTable.DataTable().destroy();
             productList.empty();
 
-            res.data['rows'].forEach(function (item,index) {
+            res.data.forEach(function (item,index) {
                 let row=`<tr class="text-xs">
                         <td> ${item['name']} ($ ${item['price']})</td>
                         <td><a data-name="${item['name']}" data-price="${item['price']}" data-id="${item['id']}" class="btn btn-outline-dark text-xxs px-2 py-1 addProduct  btn-sm m-0">Add</a></td>
@@ -331,6 +335,7 @@
                 "customer_id":CId,
                 "products":InvoiceItemList
             }
+            console.log(Data)
 
             if(CId.length===0){
                 errorToast("Customer Required !")

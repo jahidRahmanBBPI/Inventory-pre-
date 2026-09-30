@@ -20,7 +20,7 @@ class InvoiceController extends Controller
     }
 
     function ReportPage(){
-        // return view('pages.dashboard.report-page');
+        return view('pages.dashboard.report-page');
         
     }
 
@@ -61,7 +61,10 @@ class InvoiceController extends Controller
 
             DB::commit();
 
-            return 1;
+            return response()->json([
+                'status'=>'success',
+                'message'=>'Invoice Created Successfully.'
+            ]);
         } catch(Exception $e){
             DB::rollBack();
             return 0;
